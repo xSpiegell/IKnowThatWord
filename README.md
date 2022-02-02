@@ -1,2 +1,2 @@
-# IKnowThatWord
-Segundo mini proyecto
+Segundo mini proyecto de java
+(Falta por incluir texto)
