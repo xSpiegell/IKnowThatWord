@@ -1,48 +1,64 @@
 package myProject;
 
 import java.io.*;
+import java.util.ArrayList;
+
+/**
+ * Esta clase funciona para la lectura y escritura en documentos de txt
+ * @autor Mayra Alejandra Sanchez - mayra.alejandra.sanchez@correounivalle.edu.co - 202040506
+ * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
+ * @version v.1.0.0 date:4/02/2022
+ */
 
 public class FileManager {
+    public static final String PATH="src/myProject/files/palabras.txt"; //Se asigna la direccion del txt a una variable
     private FileReader fileReader;
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
 
-    public String lecturaFile() {
-        String texto = "";
+    /**
+     * Sirve para leer el archivo de txt
+     * @return frases
+     */
+    public ArrayList<String> lecturaFile(){
+        ArrayList<String> frases = new ArrayList<String>();
 
         try {
-            fileReader = new FileReader("src/myProject/files/fileText.txt");
+            fileReader=new FileReader(PATH);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while(line!=null){
-                texto+=line;
-                texto+="\n";
-                line=input.readLine();
+            while(line != null){
+                frases.add(line);
+                line = input.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
-        }finally{
+        }finally {
             try {
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return texto;
+        return frases;
     }
 
-    public void escribirTexto(String linea){
+    /**
+     * Sirve para escribir en el archivo
+     * @param line
+     */
+    public void escribirFile(String line){
         try {
-            fileWriter = new FileWriter("src/myProject/files/fileText.txt",true);
+            fileWriter = new FileWriter(PATH,true);
             output = new BufferedWriter(fileWriter);
-            output.write(linea);
+            output.write(line);
             output.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        }finally {
             try {
                 output.close();
             } catch (IOException e) {
