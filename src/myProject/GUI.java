@@ -14,13 +14,15 @@ public class GUI extends JFrame {
     public  static final String CREDITOS="CRÉDITOS\n" +
             "-> BRAYAN STIVEN SANCHEZ LEON\n" +
             "-> MAYRA ALEJANDRA SANCHEZ SALINAS";
-    public  static final String AYUDA="";
+    public  static final String AYUDA="Este  ejercicio  entrena  la  memoria  episódica  verbal  reciente.  Es  importante  en  tareas  donde  es  útil \nreconocer  qué información  hemos  oído  antes,  como  en conversaciones,  películas  o  ir  a  la  compra.\n"+"\n"+
+            "El  juego  consiste en  presentar  al  jugador  una  secuencia  de palabras  de una  en  una,  es  decir,  aparece  una\npalabra,  dura  5  segundos  en pantalla,  luego  se  borra  y  aparece  la  siguiente.   El  jugador  deberá  memorizar\nlas palabras  que van  apareciendo.\n"+"\n"+
+            "Tras la serie  de  palabras  a memorizar,  el  juego  presentará un  listado  con  el  doble  de  palabras que  se\nmostraron. Por  cada  una  las  palabras  el  jugador  deberá  indicar  si  la  palabra  estaba  o  no  contenida  en  el\nlistado  a  memorizar  y  tendrá  un  tiempo  de  7  segundos  para  responder,  en  caso  de no  hacerlo  se tomará\ncomo un  error.";
 
     private Header headerProject;
     private Escucha escucha;
     private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
-
+    private ImageIcon imageExplicacion;
 
     /**
      * Constructor de la clase GUI
@@ -104,7 +106,7 @@ public class GUI extends JFrame {
         //Creación botón empezar
         empezar = new JButton(" Iniciar ");
         empezar.addActionListener(escucha);
-        empezar.setBackground(new Color(132, 250, 101,115));
+        empezar.setBackground(Color.yellow);
         constraints.gridx=5;
         constraints.gridy=7;
         constraints.gridwidth=1;
@@ -115,7 +117,7 @@ public class GUI extends JFrame {
         //Creación botón registro
         registro = new JButton(" Registrate ");
         registro.addActionListener(escucha);
-        registro.setBackground(new Color(101, 121, 250,115));
+        registro.setBackground(Color.ORANGE);
         constraints.gridx=5;
         constraints.gridy=2;
         constraints.gridwidth=1;
@@ -202,12 +204,13 @@ public class GUI extends JFrame {
 
                 }else{
                     if (e.getSource()==creditos){
-                        //Al presionar el boton CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
+                        //Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
                         JOptionPane.showMessageDialog(null,CREDITOS);
                     }else{
                         if (e.getSource()==ayuda){
-                            //Al presionar el boton ?, salen las inidicaciones que estan en la variable estatica AYUDA
-                            JOptionPane.showMessageDialog(null,AYUDA);
+                            //Al presionar el botón ?, salen las indicaciones que están en la variable estatica AYUDA
+                            imageExplicacion = new ImageIcon(getClass().getResource("/utilidades/tabla por nivel.PNG"));
+                            JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
                         }else{
                             if (e.getSource()==minimizar){
                                 //Sirve para minimizar el Jframe
