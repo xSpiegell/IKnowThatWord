@@ -18,7 +18,7 @@ public class GUI extends JFrame {
 
     private Header headerProject;
     private Escucha escucha;
-    private JButton continuar,ayuda,salir, creditos, empezar,minimizar;
+    private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
 
 
@@ -106,22 +106,22 @@ public class GUI extends JFrame {
         empezar.addActionListener(escucha);
         empezar.setBackground(new Color(132, 250, 101,115));
         constraints.gridx=5;
-        constraints.gridy=6;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.CENTER;
-        constraints.anchor=GridBagConstraints.CENTER;
-        this.add(empezar,constraints);
-        
-        /*Creación botón continuar
-        continuar = new JButton(" Continuar ");
-        continuar.addActionListener(escucha);
-        continuar.setBackground(new Color(250, 101, 203,115));
-        constraints.gridx=5;
         constraints.gridy=7;
         constraints.gridwidth=1;
         constraints.fill=GridBagConstraints.CENTER;
         constraints.anchor=GridBagConstraints.CENTER;
-        this.add(continuar,constraints);*/
+        this.add(empezar,constraints);
+
+        //Creación botón registro
+        registro = new JButton(" Registrate ");
+        registro.addActionListener(escucha);
+        registro.setBackground(new Color(101, 121, 250,115));
+        constraints.gridx=5;
+        constraints.gridy=2;
+        constraints.gridwidth=1;
+        constraints.fill=GridBagConstraints.CENTER;
+        constraints.anchor=GridBagConstraints.CENTER;
+        this.add(registro,constraints);
 
         //Panel nombre
         alias = new JPanel();
@@ -130,11 +130,12 @@ public class GUI extends JFrame {
         alias.setBackground(new Color(178, 161, 255,152));
 
         constraints.gridx=5;
-        constraints.gridy=3;
+        constraints.gridy=4;
         constraints.gridwidth=1;
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
         add(alias,constraints);
+
         //Panel nivel
         nivel = new JPanel();
         nivel.setPreferredSize(new Dimension(200,50));
@@ -142,7 +143,7 @@ public class GUI extends JFrame {
         nivel.setBackground(new Color(255, 210, 142,152));
 
         constraints.gridx=5;
-        constraints.gridy=4;
+        constraints.gridy=5;
         constraints.gridwidth=1;
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
@@ -154,7 +155,7 @@ public class GUI extends JFrame {
         juego.setBackground(Color.white);
 
         constraints.gridx=5;
-        constraints.gridy=5;
+        constraints.gridy=6;
         constraints.gridwidth=1;
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
@@ -167,7 +168,7 @@ public class GUI extends JFrame {
         informacion.setBackground(new Color(81, 221, 241,152));
 
         constraints.gridx=5;
-        constraints.gridy=2;
+        constraints.gridy=8;
         constraints.gridwidth=1;
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
@@ -197,7 +198,7 @@ public class GUI extends JFrame {
 
 
             }else{
-                if(e.getSource()==continuar){
+                if(e.getSource()==registro){
 
                 }else{
                     if (e.getSource()==creditos){
