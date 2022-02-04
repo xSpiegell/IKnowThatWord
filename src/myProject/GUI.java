@@ -15,12 +15,10 @@ public class GUI extends JFrame {
             "-> BRAYAN STIVEN SANCHEZ LEON\n" +
             "-> MAYRA ALEJANDRA SANCHEZ SALINAS";
     public  static final String AYUDA="";
-
     private Header headerProject;
     private Escucha escucha;
     private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
-
 
     /**
      * Constructor de la clase GUI
@@ -173,7 +171,6 @@ public class GUI extends JFrame {
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
         add(informacion,constraints);
-
     }
 
     /**
@@ -202,18 +199,18 @@ public class GUI extends JFrame {
 
                 }else{
                     if (e.getSource()==creditos){
-                        //Al presionar el boton CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
+                        // Al presionar el boton CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
                         JOptionPane.showMessageDialog(null,CREDITOS);
                     }else{
                         if (e.getSource()==ayuda){
-                            //Al presionar el boton ?, salen las inidicaciones que estan en la variable estatica AYUDA
+                            // Al presionar el boton ?, salen las inidicaciones que estan en la variable estatica AYUDA
                             JOptionPane.showMessageDialog(null,AYUDA);
                         }else{
                             if (e.getSource()==minimizar){
-                                //Sirve para minimizar el Jframe
+                                // Sirve para minimizar el Jframe
                                 setExtendedState(JFrame.CROSSHAIR_CURSOR);
                             }else{
-                                //Sirve para cerrar el Jframe
+                                // Sirve para cerrar el Jframe
                                 System.exit(0);
                             }
 
