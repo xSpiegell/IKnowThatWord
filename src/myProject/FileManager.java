@@ -25,7 +25,7 @@ public class FileManager {
         ArrayList<String> frases = new ArrayList<String>();
 
         try {
-            fileReader=new FileReader(PATH);
+            fileReader = new FileReader(PATH);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while(line != null){
