@@ -205,7 +205,7 @@ public class GUI extends JFrame {
                 }else{
                     if (e.getSource()==creditos){
                         //Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
-                        JOptionPane.showMessageDialog(null,CREDITOS);
+                        JOptionPane.showMessageDialog(null,CREDITOS,"Créditos",JOptionPane.INFORMATION_MESSAGE);
                     }else{
                         if (e.getSource()==ayuda){
                             //Al presionar el botón ?, salen las indicaciones que están en la variable estatica AYUDA
