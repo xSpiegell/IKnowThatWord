@@ -220,7 +220,7 @@ public class GUI extends JFrame {
                             JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
                         }else{
                             if (e.getSource()==minimizar){
-                                // Sirve para minimizar el Jframe
+                                // Sirve para minimizar el JFrame
                                 setExtendedState(JFrame.CROSSHAIR_CURSOR);
                             }else{
                                 // Sirve para cerrar el Jframe
