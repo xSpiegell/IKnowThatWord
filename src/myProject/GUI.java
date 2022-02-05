@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class is used for ...
@@ -29,6 +30,7 @@ public class GUI extends JFrame {
     private Timer timer;
     private FileManager fileManager;
     private int nivelActual;
+    private int seleccionarPalabra;
 
     /**
      * Constructor de la clase GUI
@@ -191,9 +193,10 @@ public class GUI extends JFrame {
         add(informacion,constraints);
 
         timer = new Timer(5000, escucha);
-        timer.start();
+        //timer.start();
         palabraAleatoria = new JLabel();
         nivelActual = 1;
+        seleccionarPalabra = 0; // 1 si debe seleccionar las palabras que memorizo, de lo contrario 0
     }
 
     /**
@@ -212,45 +215,116 @@ public class GUI extends JFrame {
      */
     private class Escucha implements ActionListener {
         private ArrayList<String> palabrasAMemorizar;
+        private ArrayList<Integer> numerosAleatorios;
+        private Random random;
         private int palabra;
+        private int aleatorio;
 
         public Escucha(){
             palabrasAMemorizar = new ArrayList<>();
+            numerosAleatorios = new ArrayList<>();
+            random = new Random();
             palabra = 0;
+            aleatorio = 0;
+        }
+        public void setPalabrasAleatorias(){
+            aleatorio = random.nextInt(palabrasAMemorizar.size());
+            if(numerosAleatorios.size() == 0){
+                numerosAleatorios.add(aleatorio);
+                palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
+                juego.add(palabraAleatoria);
+            }else{
+                if(!numerosAleatorios.contains(aleatorio)){
+                    numerosAleatorios.add(aleatorio);
+                    palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
+                    juego.add(palabraAleatoria);
+                }else{
+                    setPalabrasAleatorias();
+                }
+            }
+            revalidate();
+            repaint();
+
+            for(int i=0; i < numerosAleatorios.size(); i++){
+                System.out.println(numerosAleatorios.toString());
+            }
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == timer){
-                palabrasAMemorizar = fileManager.lecturaFile(10);
-                if(palabra < 11){
-                    palabraAleatoria.setText(palabrasAMemorizar.get(palabra));
-                    juego.add(palabraAleatoria);
-                    palabra++;
-                }else{
-                    timer.stop();
-                }
-                revalidate();
-                repaint();
-            }else{
-                if(e.getSource() == registro){
+            switch(nivelActual){
+                case 1: palabrasAMemorizar = fileManager.lecturaFile(20);
+                    break;
+                case 2: palabrasAMemorizar = fileManager.lecturaFile(40);
+                    break;
+                case 3: palabrasAMemorizar = fileManager.lecturaFile(50);
+                    break;
+                case 4: palabrasAMemorizar = fileManager.lecturaFile(60);
+                    break;
+                case 5: palabrasAMemorizar = fileManager.lecturaFile(70);
+                    break;
+                case 6: palabrasAMemorizar = fileManager.lecturaFile(80);
+                    break;
+                case 7: palabrasAMemorizar = fileManager.lecturaFile(100);
+                    break;
+                case 8: palabrasAMemorizar = fileManager.lecturaFile(120);
+                    break;
+                case 9: palabrasAMemorizar = fileManager.lecturaFile(140);
+                    break;
+                case 10: palabrasAMemorizar = fileManager.lecturaFile(200);
+                    break;
+            }
 
-                }else{
-                    if (e.getSource() == creditos){
-                        // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
-                        JOptionPane.showMessageDialog(null,CREDITOS,"Créditos",JOptionPane.INFORMATION_MESSAGE);
-                    }else{
-                        if (e.getSource() == ayuda){
-                            // Al presionar el botón ?, salen las indicaciones que están en la variable estatica AYUDA
-                            imageExplicacion = new ImageIcon(getClass().getResource("/utilidades/tabla por nivel.PNG"));
-                            JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
+            //palabrasAMemorizar = fileManager.lecturaFile(20);
+            if(e.getSource() == empezar){
+                timer.start();
+                setPalabrasAleatorias();
+                palabra = 0;
+                empezar.setEnabled(false);
+                empezar.removeActionListener(escucha);
+            }else{
+                if(e.getSource() == timer){
+                    empezar.setEnabled(false);
+                    palabra++;
+                    if(seleccionarPalabra == 0){
+                        if(palabra < palabrasAMemorizar.size()/2){
+                            setPalabrasAleatorias();
                         }else{
-                            if (e.getSource() == minimizar){
-                                // Sirve para minimizar el Jframe
-                                setExtendedState(JFrame.CROSSHAIR_CURSOR);
+                            timer.stop();
+                            seleccionarPalabra = 1;
+                            empezar.setEnabled(true);
+                            empezar.addActionListener(escucha);
+                        }
+                    }else{
+                        if(palabra < palabrasAMemorizar.size()){
+                            setPalabrasAleatorias();
+                        }else{
+                            timer.stop();
+                            seleccionarPalabra = 0;
+                            empezar.setEnabled(true);
+                            empezar.addActionListener(escucha);
+                        }
+                    }
+                }else{
+                    if(e.getSource() == registro){
+
+                    }else{
+                        if (e.getSource() == creditos){
+                            // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
+                            JOptionPane.showMessageDialog(null,CREDITOS,"Créditos",JOptionPane.INFORMATION_MESSAGE);
+                        }else{
+                            if (e.getSource() == ayuda){
+                                // Al presionar el botón ?, salen las indicaciones que están en la variable estatica AYUDA
+                                imageExplicacion = new ImageIcon(getClass().getResource("/utilidades/tabla por nivel.PNG"));
+                                JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
                             }else{
-                                // Sirve para cerrar el Jframe
-                                System.exit(0);
+                                if (e.getSource() == minimizar){
+                                    // Sirve para minimizar el Jframe
+                                    setExtendedState(JFrame.CROSSHAIR_CURSOR);
+                                }else{
+                                    // Sirve para cerrar el Jframe
+                                    System.exit(0);
+                                }
                             }
                         }
                     }

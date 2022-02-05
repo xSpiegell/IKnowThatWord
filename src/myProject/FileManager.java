@@ -23,7 +23,7 @@ public class FileManager {
      */
     public ArrayList<String> lecturaFile(int cantidadPalabras){
         ArrayList<String> frases = new ArrayList<>();
-        int contador = 0;
+        int contador = 1;
 
         try {
             fileReader = new FileReader(PATH);
@@ -31,7 +31,7 @@ public class FileManager {
             String line = input.readLine();
 
             // Agrega una cantidad de palabras al arraylist dependiendo del nivel
-            while(line != null && contador < cantidadPalabras){
+            while(line != null && contador <= cantidadPalabras){
                 frases.add(line);
                 line = input.readLine();
                 contador++;
