@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 
 public class FileManager {
-    public static final String PATH="src/myProject/files/palabras.txt"; //Se asigna la direccion del txt a una variable
+    public static final String PATH="src/myProject/files/palabras.txt"; // Se asigna la direccion del txt a una variable
     private FileReader fileReader;
     private BufferedReader input;
     private FileWriter fileWriter;
@@ -21,16 +21,20 @@ public class FileManager {
      * Sirve para leer el archivo de txt
      * @return frases
      */
-    public ArrayList<String> lecturaFile(){
-        ArrayList<String> frases = new ArrayList<String>();
+    public ArrayList<String> lecturaFile(int cantidadPalabras){
+        ArrayList<String> frases = new ArrayList<>();
+        int contador = 0;
 
         try {
             fileReader = new FileReader(PATH);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while(line != null){
+
+            // Agrega una cantidad de palabras al arraylist dependiendo del nivel
+            while(line != null && contador < cantidadPalabras){
                 frases.add(line);
                 line = input.readLine();
+                contador++;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

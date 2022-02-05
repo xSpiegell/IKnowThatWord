@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -23,7 +24,11 @@ public class GUI extends JFrame {
     private Escucha escucha;
     private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
+    private JLabel palabraAleatoria;
     private ImageIcon imageExplicacion;
+    private Timer timer;
+    private FileManager fileManager;
+    private int nivelActual;
 
     /**
      * Constructor de la clase GUI
@@ -51,6 +56,7 @@ public class GUI extends JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
         // Create Listener Object and Control Object
         escucha = new Escucha();
+        fileManager = new FileManager();
         // Set up JComponents
         headerProject = new Header("I know that word", Color.pink);
 
@@ -183,6 +189,11 @@ public class GUI extends JFrame {
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
         add(informacion,constraints);
+
+        timer = new Timer(5000, escucha);
+        timer.start();
+        palabraAleatoria = new JLabel();
+        nivelActual = 1;
     }
 
     /**
@@ -200,12 +211,27 @@ public class GUI extends JFrame {
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
     private class Escucha implements ActionListener {
+        private ArrayList<String> palabrasAMemorizar;
+        private int palabra;
+
+        public Escucha(){
+            palabrasAMemorizar = new ArrayList<>();
+            palabra = 0;
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == empezar){
-
-
+            if(e.getSource() == timer){
+                palabrasAMemorizar = fileManager.lecturaFile(10);
+                if(palabra < 11){
+                    palabraAleatoria.setText(palabrasAMemorizar.get(palabra));
+                    juego.add(palabraAleatoria);
+                    palabra++;
+                }else{
+                    timer.stop();
+                }
+                revalidate();
+                repaint();
             }else{
                 if(e.getSource() == registro){
 
