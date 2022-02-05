@@ -63,6 +63,7 @@ public class GUI extends JFrame {
         salir = new JButton("x");
         salir.addActionListener(escucha);
         salir.setBackground(Color.red);
+        salir.setFocusable(false);
         constraints.gridx=11;
         constraints.gridy=1;
         constraints.gridwidth=1;
@@ -74,6 +75,7 @@ public class GUI extends JFrame {
         ayuda = new JButton(" ? ");
         ayuda.addActionListener(escucha);
         ayuda.setBackground(new Color(82, 140, 255, 255));
+        ayuda.setFocusable(false);
         constraints.gridx=0;
         constraints.gridy=1;
         constraints.gridwidth=2;
@@ -85,6 +87,7 @@ public class GUI extends JFrame {
         minimizar = new JButton("-");
         minimizar.addActionListener(escucha);
         minimizar.setBackground(Color.cyan);
+        minimizar.setFocusable(false);
         constraints.gridx=10;
         constraints.gridy=1;
         constraints.gridwidth=1;
@@ -96,6 +99,7 @@ public class GUI extends JFrame {
         creditos = new JButton(" Créditos ");
         creditos.addActionListener(escucha);
         creditos.setBackground((new Color(194, 161, 108, 255)));
+        creditos.setFocusable(false);
         constraints.gridx=2;
         constraints.gridy=1;
         constraints.gridwidth=1;
@@ -107,6 +111,7 @@ public class GUI extends JFrame {
         empezar = new JButton(" Iniciar ");
         empezar.addActionListener(escucha);
         empezar.setBackground(Color.yellow);
+        empezar.setFocusable(false);
         constraints.gridx=5;
         constraints.gridy=7;
         constraints.gridwidth=1;
@@ -118,6 +123,7 @@ public class GUI extends JFrame {
         registro = new JButton(" Registrate ");
         registro.addActionListener(escucha);
         registro.setBackground(Color.ORANGE);
+        registro.setFocusable(false);
         constraints.gridx=5;
         constraints.gridy=2;
         constraints.gridwidth=1;
