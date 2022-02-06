@@ -212,8 +212,8 @@ public class GUI extends JFrame {
         mensaje.setHorizontalAlignment(JLabel.CENTER);
 
         delaysTimer = new ArrayList<>(2);
+        delaysTimer.add(2000);
         delaysTimer.add(5000);
-        delaysTimer.add(7000);
         timer = new Timer(delaysTimer.get(0), escucha);
 
         nivelActual = 1;
@@ -325,7 +325,15 @@ public class GUI extends JFrame {
             }else{
                 mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
             }
+
+            timer.stop();
             informacion.add(mensaje, BorderLayout.CENTER);
+            palabrasAMemorizar.clear();
+            listaAMemorizar.clear();
+            numerosAleatorios.clear();
+            numerosAleatoriosExtra.clear();
+            aciertos = 0;
+            porcentajeAciertos = 0;
             revalidate();
             repaint();
             return aprobacion;
@@ -417,6 +425,11 @@ public class GUI extends JFrame {
                     timer.start();
                     setPalabrasAleatorias();
                 }else{
+                    botonSi.addActionListener(escuchaBotonesSecundarios);
+                    botonNo.addActionListener(escuchaBotonesSecundarios);
+                    subPanel.add(botonSi);
+                    subPanel.add(botonNo);
+                    juego.add(subPanel, BorderLayout.SOUTH);
                     timer.setInitialDelay(delaysTimer.get(1));
                     timer.setDelay(delaysTimer.get(1));
                     timer.restart();
@@ -424,6 +437,7 @@ public class GUI extends JFrame {
                     escogerPalabra();
                 }
 
+                informacion.removeAll();
                 mostrarNivel.setText(String.valueOf(nivelActual));
                 nivel.add(mostrarNivel, BorderLayout.CENTER);
                 empezar.setEnabled(false);
@@ -432,8 +446,6 @@ public class GUI extends JFrame {
                 repaint();
             }else{
                 if(e.getSource() == timer){
-                    botonSi.setEnabled(true);
-                    botonNo.setEnabled(true);
                     empezar.setEnabled(false);
                     palabra++;
                     if(seleccionarPalabra == 0){
@@ -447,22 +459,23 @@ public class GUI extends JFrame {
                             empezar.addActionListener(escucha);
 
                             // Inicializa los botones secundarios
+                            // AQUI HAY UN PROBLEMA, SE MUESTRAN LOS BOTONES AL FINALIZAR EL TIMER EN EL NIVEL 2 EN ADELANTE
+                            /*
                             botonSi.addActionListener(escuchaBotonesSecundarios);
                             botonNo.addActionListener(escuchaBotonesSecundarios);
                             subPanel.add(botonSi);
                             subPanel.add(botonNo);
                             juego.add(subPanel, BorderLayout.SOUTH);
+
+                             */
                         }
                     }else{
                         botonSi.setEnabled(true);
-                        botonSi.setEnabled(true);
+                        botonNo.setEnabled(true);
                         if(palabra < palabrasAMemorizar.size()){
                             escogerPalabra();
                         }else{
                             timer.stop();
-                            timer.setInitialDelay(delaysTimer.get(0));
-                            timer.setDelay(delaysTimer.get(0));
-                            timer.restart();
                             palabra = 0;
                             seleccionarPalabra = 0;
                             empezar.addActionListener(escucha);
@@ -470,8 +483,7 @@ public class GUI extends JFrame {
                             // Deshabilita los botones secundarios
                             botonSi.removeActionListener(escuchaBotonesSecundarios);
                             botonNo.removeActionListener(escuchaBotonesSecundarios);
-                            botonSi.setEnabled(false);
-                            botonNo.setEnabled(false);
+                            juego.removeAll();
 
                             if(siguienteNivel(nivelActual)){
                                 empezar.setEnabled(true);
