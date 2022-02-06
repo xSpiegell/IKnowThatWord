@@ -25,14 +25,15 @@ public class GUI extends JFrame {
     private Escucha escucha;
     private JButton registro, ayuda, salir, creditos, empezar, minimizar, botonSi, botonNo;
     private JPanel alias, nivel, informacion, juego, subPanel;
-    private JLabel palabraAleatoria;
+    private JLabel palabraAleatoria, mostrarNivel, mensaje;
     private ImageIcon imageExplicacion;
     private Timer timer;
     private FileManager fileManager;
     private int nivelActual;
     private int seleccionarPalabra;
     private int aciertos;
-    private int porcentajeAciertos;
+    private double porcentajeAciertos;
+    private ArrayList<Integer> delaysTimer;
 
     /**
      * Constructor de la clase GUI
@@ -163,6 +164,7 @@ public class GUI extends JFrame {
         nivel = new JPanel();
         nivel.setPreferredSize(new Dimension(200,50));
         nivel.setBorder(BorderFactory.createTitledBorder("Nivel"));
+        nivel.setLayout(new BorderLayout());
         nivel.setBackground(new Color(255, 210, 142,152));
 
         constraints.gridx = 5;
@@ -171,6 +173,9 @@ public class GUI extends JFrame {
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor = GridBagConstraints.LINE_START;
         add(nivel,constraints);
+
+        mostrarNivel = new JLabel();
+        mostrarNivel.setHorizontalAlignment(JLabel.CENTER);
 
         // Panel juego
         juego = new JPanel();
@@ -186,10 +191,14 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_START;
         add(juego,constraints);
 
+        palabraAleatoria = new JLabel();
+        palabraAleatoria.setHorizontalAlignment(JLabel.CENTER);
+
         // Panel aciertos, errores y resultado
         informacion = new JPanel();
         informacion.setPreferredSize(new Dimension(200,100));
         informacion.setBorder(BorderFactory.createTitledBorder("Información"));
+        informacion.setLayout(new BorderLayout());
         informacion.setBackground(new Color(81, 221, 241,152));
 
         constraints.gridx = 5;
@@ -199,13 +208,18 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_START;
         add(informacion,constraints);
 
-        timer = new Timer(5000, escucha);
-        palabraAleatoria = new JLabel();
-        palabraAleatoria.setHorizontalAlignment(JLabel.CENTER);
+        mensaje = new JLabel();
+        mensaje.setHorizontalAlignment(JLabel.CENTER);
+
+        delaysTimer = new ArrayList<>(2);
+        delaysTimer.add(5000);
+        delaysTimer.add(7000);
+        timer = new Timer(delaysTimer.get(0), escucha);
+
         nivelActual = 1;
         seleccionarPalabra = 0; // 1 si debe seleccionar las palabras que memorizo, de lo contrario 0
         aciertos = 0;
-        porcentajeAciertos = 0;
+        porcentajeAciertos = 0.0;
     }
 
     /**
@@ -245,9 +259,7 @@ public class GUI extends JFrame {
                     }
                 }
                 botonSi.setEnabled(false);
-                //botonSi.removeActionListener(escuchaBotonesSecundarios);
                 botonNo.setEnabled(false);
-                //botonNo.removeActionListener(escuchaBotonesSecundarios);
                 System.out.print(aciertos);
             }
         }
@@ -262,6 +274,61 @@ public class GUI extends JFrame {
             palabra = 0;
             aleatorio = 0;
             respuesta = 0; // 0 si selecciono YES, de lo contrario 1
+        }
+
+        public boolean siguienteNivel(int nivel){
+            boolean aprobacion = false;
+            switch(nivel){
+                case 1:
+                case 2:
+                    if(porcentajeAciertos >= 70){
+                        aprobacion = true;
+                    }
+                    break;
+                case 3:
+                    if(porcentajeAciertos >= 75){
+                        aprobacion = true;
+                    }
+                    break;
+                case 4:
+                case 5:
+                    if(porcentajeAciertos >= 80){
+                        aprobacion = true;
+                    }
+                    break;
+                case 6:
+                    if(porcentajeAciertos >= 85){
+                        aprobacion = true;
+                    }
+                    break;
+                case 7:
+                case 8:
+                    if(porcentajeAciertos >= 90){
+                        aprobacion = true;
+                    }
+                    break;
+                case 9:
+                    if(porcentajeAciertos >= 95){
+                        aprobacion = true;
+                    }
+                    break;
+                case 10:
+                    if(porcentajeAciertos >= 100){
+                        aprobacion = true;
+                    }
+                    break;
+            }
+
+            if(aprobacion){
+                nivelActual++;
+                mensaje.setText("¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
+            }else{
+                mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
+            }
+            informacion.add(mensaje, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+            return aprobacion;
         }
 
         public void setPalabrasAleatorias(){
@@ -288,13 +355,6 @@ public class GUI extends JFrame {
         }
 
         public void escogerPalabra() {
-            /*
-            botonSi.addActionListener(escuchaBotonesSecundarios);
-            botonNo.addActionListener(escuchaBotonesSecundarios);
-            subPanel.add(botonSi);
-            subPanel.add(botonNo);
-            juego.add(subPanel, BorderLayout.SOUTH);
-             */
             aleatorio = random.nextInt(palabrasAMemorizar.size());
 
             if(numerosAleatoriosExtra.size() == 0){
@@ -318,46 +378,58 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch(nivelActual){
                 case 1: palabrasAMemorizar = fileManager.lecturaFile(20);
-                        porcentajeAciertos = (aciertos/20) * 100;
+                        porcentajeAciertos = (aciertos/20.0) * 100.0;
                         break;
                 case 2: palabrasAMemorizar = fileManager.lecturaFile(40);
-                        porcentajeAciertos = (aciertos/40) * 100;
+                        porcentajeAciertos = (aciertos/40.0) * 100.0;
                         break;
                 case 3: palabrasAMemorizar = fileManager.lecturaFile(50);
-                        porcentajeAciertos = (aciertos/50) * 100;
+                        porcentajeAciertos = (aciertos/50.0) * 100.0;
                         break;
                 case 4: palabrasAMemorizar = fileManager.lecturaFile(60);
-                        porcentajeAciertos = (aciertos/60) * 100;
+                        porcentajeAciertos = (aciertos/60.0) * 100.0;
                         break;
                 case 5: palabrasAMemorizar = fileManager.lecturaFile(70);
-                        porcentajeAciertos = (aciertos/70) * 100;
+                        porcentajeAciertos = (aciertos/70.0) * 100.0;
                         break;
                 case 6: palabrasAMemorizar = fileManager.lecturaFile(80);
-                        porcentajeAciertos = (aciertos/80) * 100;
+                        porcentajeAciertos = (aciertos/80.0) * 100.0;
                         break;
                 case 7: palabrasAMemorizar = fileManager.lecturaFile(100);
-                        porcentajeAciertos = (aciertos/100) * 100;
+                        porcentajeAciertos = (aciertos/100.0) * 100.0;
                         break;
                 case 8: palabrasAMemorizar = fileManager.lecturaFile(120);
-                        porcentajeAciertos = (aciertos/120) * 100;
+                        porcentajeAciertos = (aciertos/120.0) * 100.0;
                         break;
                 case 9: palabrasAMemorizar = fileManager.lecturaFile(140);
-                        porcentajeAciertos = (aciertos/140) * 100;
+                        porcentajeAciertos = (aciertos/140.0) * 100.0;
                         break;
                 case 10: palabrasAMemorizar = fileManager.lecturaFile(200);
-                        porcentajeAciertos = (aciertos/200) * 100;
+                        porcentajeAciertos = (aciertos/200.0) * 100.0;
                         break;
             }
 
             if(e.getSource() == empezar){
-                timer.start();
                 if(seleccionarPalabra == 0){
+                    timer.setInitialDelay(delaysTimer.get(0));
+                    timer.setDelay(delaysTimer.get(0));
+                    timer.restart();
+                    timer.start();
                     setPalabrasAleatorias();
                 }else{
+                    timer.setInitialDelay(delaysTimer.get(1));
+                    timer.setDelay(delaysTimer.get(1));
+                    timer.restart();
+                    timer.start();
                     escogerPalabra();
                 }
+
+                mostrarNivel.setText(String.valueOf(nivelActual));
+                nivel.add(mostrarNivel, BorderLayout.CENTER);
                 empezar.setEnabled(false);
                 empezar.removeActionListener(escucha);
+                revalidate();
+                repaint();
             }else{
                 if(e.getSource() == timer){
                     botonSi.setEnabled(true);
@@ -374,6 +446,7 @@ public class GUI extends JFrame {
                             empezar.setEnabled(true);
                             empezar.addActionListener(escucha);
 
+                            // Inicializa los botones secundarios
                             botonSi.addActionListener(escuchaBotonesSecundarios);
                             botonNo.addActionListener(escuchaBotonesSecundarios);
                             subPanel.add(botonSi);
@@ -387,12 +460,24 @@ public class GUI extends JFrame {
                             escogerPalabra();
                         }else{
                             timer.stop();
+                            timer.setInitialDelay(delaysTimer.get(0));
+                            timer.setDelay(delaysTimer.get(0));
+                            timer.restart();
                             palabra = 0;
                             seleccionarPalabra = 0;
-                            empezar.setEnabled(true);
                             empezar.addActionListener(escucha);
+
+                            // Deshabilita los botones secundarios
+                            botonSi.removeActionListener(escuchaBotonesSecundarios);
+                            botonNo.removeActionListener(escuchaBotonesSecundarios);
                             botonSi.setEnabled(false);
-                            botonSi.setEnabled(false);
+                            botonNo.setEnabled(false);
+
+                            if(siguienteNivel(nivelActual)){
+                                empezar.setEnabled(true);
+                            }else{
+                                empezar.setEnabled(false);
+                            }
                         }
                     }
                 }else{
