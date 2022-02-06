@@ -23,14 +23,16 @@ public class GUI extends JFrame {
 
     private Header headerProject;
     private Escucha escucha;
-    private JButton registro,ayuda,salir, creditos, empezar,minimizar;
-    private JPanel alias, nivel, informacion, juego;
+    private JButton registro, ayuda, salir, creditos, empezar, minimizar, botonSi, botonNo;
+    private JPanel alias, nivel, informacion, juego, subPanel;
     private JLabel palabraAleatoria;
     private ImageIcon imageExplicacion;
     private Timer timer;
     private FileManager fileManager;
     private int nivelActual;
     private int seleccionarPalabra;
+    private int aciertos;
+    private int porcentajeAciertos;
 
     /**
      * Constructor de la clase GUI
@@ -153,6 +155,10 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_START;
         add(alias,constraints);
 
+        subPanel = new JPanel();
+        botonSi = new JButton("Si");
+        botonNo = new JButton("No");
+
         // Panel nivel
         nivel = new JPanel();
         nivel.setPreferredSize(new Dimension(200,50));
@@ -170,6 +176,7 @@ public class GUI extends JFrame {
         juego = new JPanel();
         juego.setPreferredSize(new Dimension(300,350));
         juego.setBorder(BorderFactory.createTitledBorder("Presta atención a la palabras"));
+        juego.setLayout(new BorderLayout());
         juego.setBackground(Color.white);
 
         constraints.gridx = 5;
@@ -193,10 +200,12 @@ public class GUI extends JFrame {
         add(informacion,constraints);
 
         timer = new Timer(5000, escucha);
-        //timer.start();
         palabraAleatoria = new JLabel();
+        palabraAleatoria.setHorizontalAlignment(JLabel.CENTER);
         nivelActual = 1;
         seleccionarPalabra = 0; // 1 si debe seleccionar las palabras que memorizo, de lo contrario 0
+        aciertos = 0;
+        porcentajeAciertos = 0;
     }
 
     /**
@@ -215,29 +224,59 @@ public class GUI extends JFrame {
      */
     private class Escucha implements ActionListener {
         private ArrayList<String> palabrasAMemorizar;
+        private ArrayList<String> listaAMemorizar;
         private ArrayList<Integer> numerosAleatorios;
+        private ArrayList<Integer> numerosAleatoriosExtra;
         private Random random;
+        private EscuchaBotonesSecundarios escuchaBotonesSecundarios;
         private int palabra;
         private int aleatorio;
+        private int respuesta;
+
+        private class EscuchaBotonesSecundarios implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == botonSi && listaAMemorizar.contains(palabraAleatoria.getText())){
+                    aciertos++;
+                }else{
+                    if(e.getSource() == botonNo && listaAMemorizar.contains(palabraAleatoria.getText()) == false){
+                        aciertos++;
+                    }
+                }
+                botonSi.setEnabled(false);
+                //botonSi.removeActionListener(escuchaBotonesSecundarios);
+                botonNo.setEnabled(false);
+                //botonNo.removeActionListener(escuchaBotonesSecundarios);
+                System.out.print(aciertos);
+            }
+        }
 
         public Escucha(){
             palabrasAMemorizar = new ArrayList<>();
             numerosAleatorios = new ArrayList<>();
+            numerosAleatoriosExtra = new ArrayList<>();
+            listaAMemorizar = new ArrayList<>();
             random = new Random();
+            escuchaBotonesSecundarios = new EscuchaBotonesSecundarios();
             palabra = 0;
             aleatorio = 0;
+            respuesta = 0; // 0 si selecciono YES, de lo contrario 1
         }
+
         public void setPalabrasAleatorias(){
             aleatorio = random.nextInt(palabrasAMemorizar.size());
             if(numerosAleatorios.size() == 0){
                 numerosAleatorios.add(aleatorio);
+                listaAMemorizar.add(palabrasAMemorizar.get(aleatorio));
                 palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
-                juego.add(palabraAleatoria);
+                juego.add(palabraAleatoria, BorderLayout.CENTER);
             }else{
                 if(!numerosAleatorios.contains(aleatorio)){
                     numerosAleatorios.add(aleatorio);
+                    listaAMemorizar.add(palabrasAMemorizar.get(aleatorio));
                     palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
-                    juego.add(palabraAleatoria);
+                    juego.add(palabraAleatoria, BorderLayout.CENTER);
                 }else{
                     setPalabrasAleatorias();
                 }
@@ -245,64 +284,115 @@ public class GUI extends JFrame {
             revalidate();
             repaint();
 
-            for(int i=0; i < numerosAleatorios.size(); i++){
-                System.out.println(numerosAleatorios.toString());
+            System.out.println(numerosAleatorios.toString());
+        }
+
+        public void escogerPalabra() {
+            /*
+            botonSi.addActionListener(escuchaBotonesSecundarios);
+            botonNo.addActionListener(escuchaBotonesSecundarios);
+            subPanel.add(botonSi);
+            subPanel.add(botonNo);
+            juego.add(subPanel, BorderLayout.SOUTH);
+             */
+            aleatorio = random.nextInt(palabrasAMemorizar.size());
+
+            if(numerosAleatoriosExtra.size() == 0){
+                numerosAleatoriosExtra.add(aleatorio);
+                palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
+                juego.add(palabraAleatoria, BorderLayout.CENTER);
+            }else{
+                if(!numerosAleatoriosExtra.contains(aleatorio)){
+                    numerosAleatoriosExtra.add(aleatorio);
+                    palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
+                    juego.add(palabraAleatoria, BorderLayout.CENTER);
+                }else{
+                    escogerPalabra();
+                }
             }
+            revalidate();
+            repaint();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(nivelActual){
                 case 1: palabrasAMemorizar = fileManager.lecturaFile(20);
-                    break;
+                        porcentajeAciertos = (aciertos/20) * 100;
+                        break;
                 case 2: palabrasAMemorizar = fileManager.lecturaFile(40);
-                    break;
+                        porcentajeAciertos = (aciertos/40) * 100;
+                        break;
                 case 3: palabrasAMemorizar = fileManager.lecturaFile(50);
-                    break;
+                        porcentajeAciertos = (aciertos/50) * 100;
+                        break;
                 case 4: palabrasAMemorizar = fileManager.lecturaFile(60);
-                    break;
+                        porcentajeAciertos = (aciertos/60) * 100;
+                        break;
                 case 5: palabrasAMemorizar = fileManager.lecturaFile(70);
-                    break;
+                        porcentajeAciertos = (aciertos/70) * 100;
+                        break;
                 case 6: palabrasAMemorizar = fileManager.lecturaFile(80);
-                    break;
+                        porcentajeAciertos = (aciertos/80) * 100;
+                        break;
                 case 7: palabrasAMemorizar = fileManager.lecturaFile(100);
-                    break;
+                        porcentajeAciertos = (aciertos/100) * 100;
+                        break;
                 case 8: palabrasAMemorizar = fileManager.lecturaFile(120);
-                    break;
+                        porcentajeAciertos = (aciertos/120) * 100;
+                        break;
                 case 9: palabrasAMemorizar = fileManager.lecturaFile(140);
-                    break;
+                        porcentajeAciertos = (aciertos/140) * 100;
+                        break;
                 case 10: palabrasAMemorizar = fileManager.lecturaFile(200);
-                    break;
+                        porcentajeAciertos = (aciertos/200) * 100;
+                        break;
             }
 
-            //palabrasAMemorizar = fileManager.lecturaFile(20);
             if(e.getSource() == empezar){
                 timer.start();
-                setPalabrasAleatorias();
-                palabra = 0;
+                if(seleccionarPalabra == 0){
+                    setPalabrasAleatorias();
+                }else{
+                    escogerPalabra();
+                }
                 empezar.setEnabled(false);
                 empezar.removeActionListener(escucha);
             }else{
                 if(e.getSource() == timer){
+                    botonSi.setEnabled(true);
+                    botonNo.setEnabled(true);
                     empezar.setEnabled(false);
                     palabra++;
                     if(seleccionarPalabra == 0){
-                        if(palabra < palabrasAMemorizar.size()/2){
+                        if(palabra < palabrasAMemorizar.size() / 2){
                             setPalabrasAleatorias();
                         }else{
                             timer.stop();
+                            palabra = 0;
                             seleccionarPalabra = 1;
                             empezar.setEnabled(true);
                             empezar.addActionListener(escucha);
+
+                            botonSi.addActionListener(escuchaBotonesSecundarios);
+                            botonNo.addActionListener(escuchaBotonesSecundarios);
+                            subPanel.add(botonSi);
+                            subPanel.add(botonNo);
+                            juego.add(subPanel, BorderLayout.SOUTH);
                         }
                     }else{
+                        botonSi.setEnabled(true);
+                        botonSi.setEnabled(true);
                         if(palabra < palabrasAMemorizar.size()){
-                            setPalabrasAleatorias();
+                            escogerPalabra();
                         }else{
                             timer.stop();
+                            palabra = 0;
                             seleccionarPalabra = 0;
                             empezar.setEnabled(true);
                             empezar.addActionListener(escucha);
+                            botonSi.setEnabled(false);
+                            botonSi.setEnabled(false);
                         }
                     }
                 }else{
