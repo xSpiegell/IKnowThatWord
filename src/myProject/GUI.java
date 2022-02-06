@@ -24,6 +24,9 @@ public class GUI extends JFrame {
     private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
     private ImageIcon imageExplicacion;
+    private String nombreUsuario;
+    private JTextField linea;
+    private FileManager fileManager;
 
     /**
      * Constructor de la clase GUI
@@ -51,6 +54,7 @@ public class GUI extends JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
         // Create Listener Object and Control Object
         escucha = new Escucha();
+        fileManager = new FileManager();
         // Set up JComponents
         headerProject = new Header("I know that word", Color.pink);
 
@@ -108,18 +112,6 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.CENTER;
         this.add(creditos,constraints);
 
-        // Creación botón empezar
-        empezar = new JButton(" Iniciar ");
-        empezar.addActionListener(escucha);
-        empezar.setBackground(Color.yellow);
-        empezar.setFocusable(false);
-        constraints.gridx=5;
-        constraints.gridy=7;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.CENTER;
-        constraints.anchor=GridBagConstraints.CENTER;
-        this.add(empezar,constraints);
-
         // Creación botón registro
         registro = new JButton(" Registrate ");
         registro.addActionListener(escucha);
@@ -171,10 +163,19 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_START;
         add(juego,constraints);
 
+        // Creación botón empezar
+        empezar = new JButton(" Iniciar ");
+        empezar.addActionListener(escucha);
+        empezar.setBackground(Color.yellow);
+        empezar.setFocusable(false);
+
+        juego.setLayout(new BorderLayout());
+        juego.add(empezar, BorderLayout.SOUTH);
+
         // Panel aciertos, errores y resultado
         informacion = new JPanel();
         informacion.setPreferredSize(new Dimension(200,100));
-        informacion.setBorder(BorderFactory.createTitledBorder("Información"));
+        informacion.setBorder(BorderFactory.createTitledBorder("Información de la partida"));
         informacion.setBackground(new Color(81, 221, 241,152));
 
         constraints.gridx=5;
@@ -183,6 +184,7 @@ public class GUI extends JFrame {
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
         add(informacion,constraints);
+
     }
 
     /**
@@ -205,10 +207,12 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource()==empezar){
 
-
             }else{
                 if(e.getSource()==registro){
-
+                    nombreUsuario = JOptionPane.showInputDialog(null,"Ingrese su nombre o su alias","Registro",1);
+                    linea = new JTextField();
+                    linea.setText(nombreUsuario);
+                    fileManager.escribirFile(linea.getText());
                 }else{
                     if (e.getSource()==creditos){
                         // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
