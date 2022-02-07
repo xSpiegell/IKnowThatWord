@@ -20,10 +20,10 @@ public class FileManager {
     private BufferedWriter output;
 
     /**
-     * Sirve para leer el archivo de txt
+     * Sirve para leer el archivo de txt de palabras
      * @return frases
      */
-    public ArrayList<String> lecturaFile(){
+    public ArrayList<String> lecturaFilePalabras(){
         ArrayList<String> frases = new ArrayList<String>();
 
         try {
@@ -48,9 +48,37 @@ public class FileManager {
 
         return frases;
     }
-
     /**
-     * Sirve para escribir en el archivo
+     * Sirve para leer el archivo de txt de usuarios
+     * @return usuario
+     */
+    public ArrayList<String> lecturaFileUsuarios(){
+        ArrayList<String> usuario = new ArrayList<String>();
+
+        try {
+            fileReader=new FileReader(USUARIOS);
+            input = new BufferedReader(fileReader);
+            String line = input.readLine();
+            while(line != null){
+                usuario.add(line);
+                line = input.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return usuario;
+    }
+    /**
+     * Sirve para escribir en el archivo de usuarios
      * @param line
      */
     public void escribirFile(String line){

@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  * Esta es la clase principal
@@ -27,6 +29,7 @@ public class GUI extends JFrame {
     private String nombreUsuario;
     private JTextField linea;
     private FileManager fileManager;
+    private ArrayList<String> usuario = new ArrayList<String>();
 
     /**
      * Constructor de la clase GUI
@@ -113,7 +116,7 @@ public class GUI extends JFrame {
         this.add(creditos,constraints);
 
         // Creación botón registro
-        registro = new JButton(" Registrate ");
+        registro = new JButton(" Registrarse / Iniciar sesión  ");
         registro.addActionListener(escucha);
         registro.setBackground(Color.ORANGE);
         registro.setFocusable(false);
@@ -168,6 +171,7 @@ public class GUI extends JFrame {
         empezar.addActionListener(escucha);
         empezar.setBackground(Color.yellow);
         empezar.setFocusable(false);
+        empezar.setEnabled(false);
 
         juego.setLayout(new BorderLayout());
         juego.add(empezar, BorderLayout.SOUTH);
@@ -209,10 +213,18 @@ public class GUI extends JFrame {
 
             }else{
                 if(e.getSource()==registro){
+                    // Si existe usuario entonces deshabilita botón registro y habilita el botón de inicio, si no existe el usuario entonces lo agrega al archivo txt
                     nombreUsuario = JOptionPane.showInputDialog(null,"Ingrese su nombre o su alias","Registro",1);
-                    linea = new JTextField();
-                    linea.setText(nombreUsuario);
-                    fileManager.escribirFile(linea.getText());
+                    usuario = fileManager.lecturaFileUsuarios();
+                    if (usuario.contains(nombreUsuario)){
+                        empezar.setEnabled(true);
+                        registro.setEnabled(false);
+                    }else{
+                        linea = new JTextField();
+                        linea.setText(nombreUsuario);
+                        fileManager.escribirFile(linea.getText());
+                    }
+
                 }else{
                     if (e.getSource()==creditos){
                         // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
