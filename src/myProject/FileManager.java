@@ -2,7 +2,6 @@ package myProject;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Esta clase funciona para la lectura y escritura en documentos de txt
@@ -27,7 +26,7 @@ public class FileManager {
         ArrayList<String> frases = new ArrayList<String>();
 
         try {
-            fileReader=new FileReader(PALABRAS);
+            fileReader = new FileReader(PALABRAS);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while(line != null){
@@ -56,7 +55,7 @@ public class FileManager {
         ArrayList<String> usuario = new ArrayList<String>();
 
         try {
-            fileReader=new FileReader(USUARIOS);
+            fileReader = new FileReader(USUARIOS);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while(line != null){

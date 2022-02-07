@@ -61,10 +61,10 @@ public class GUI extends JFrame {
         // Set up JComponents
         headerProject = new Header("I know that word", Color.pink);
 
-        constraints.gridx=3;
-        constraints.gridy=1;
-        constraints.gridwidth=5;
-        constraints.fill=GridBagConstraints.BOTH;
+        constraints.gridx = 3;
+        constraints.gridy = 1;
+        constraints.gridwidth = 5;
+        constraints.fill = GridBagConstraints.BOTH;
         this.add(headerProject,constraints);
 
         // Creación botón salir
@@ -72,11 +72,11 @@ public class GUI extends JFrame {
         salir.addActionListener(escucha);
         salir.setBackground(Color.red);
         salir.setFocusable(false);
-        constraints.gridx=11;
-        constraints.gridy=1;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.LINE_END;
+        constraints.gridx = 11;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_END;
         this.add(salir,constraints);
 
         // Creación botón ayuda
@@ -84,11 +84,11 @@ public class GUI extends JFrame {
         ayuda.addActionListener(escucha);
         ayuda.setBackground(new Color(82, 140, 255, 255));
         ayuda.setFocusable(false);
-        constraints.gridx=0;
-        constraints.gridy=1;
-        constraints.gridwidth=2;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.LINE_START;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_START;
         this.add(ayuda,constraints);
 
         // Creación botón minimizar
@@ -96,11 +96,11 @@ public class GUI extends JFrame {
         minimizar.addActionListener(escucha);
         minimizar.setBackground(Color.cyan);
         minimizar.setFocusable(false);
-        constraints.gridx=10;
-        constraints.gridy=1;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.LAST_LINE_END;
+        constraints.gridx = 10;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LAST_LINE_END;
         this.add(minimizar,constraints);
 
         // Creación botón créditos
@@ -108,11 +108,11 @@ public class GUI extends JFrame {
         creditos.addActionListener(escucha);
         creditos.setBackground((new Color(194, 161, 108, 255)));
         creditos.setFocusable(false);
-        constraints.gridx=2;
-        constraints.gridy=1;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.CENTER;
+        constraints.gridx = 2;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.CENTER;
         this.add(creditos,constraints);
 
         // Creación botón registro
@@ -120,11 +120,11 @@ public class GUI extends JFrame {
         registro.addActionListener(escucha);
         registro.setBackground(Color.ORANGE);
         registro.setFocusable(false);
-        constraints.gridx=5;
-        constraints.gridy=2;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.CENTER;
-        constraints.anchor=GridBagConstraints.CENTER;
+        constraints.gridx = 5;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.CENTER;
+        constraints.anchor = GridBagConstraints.CENTER;
         this.add(registro,constraints);
 
         // Panel nombre
@@ -133,11 +133,11 @@ public class GUI extends JFrame {
         alias.setBorder(BorderFactory.createTitledBorder("Alias"));
         alias.setBackground(new Color(178, 161, 255,152));
 
-        constraints.gridx=5;
-        constraints.gridy=4;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.BOTH;
-        constraints.anchor=GridBagConstraints.LINE_START;
+        constraints.gridx = 5;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.LINE_START;
         add(alias,constraints);
 
         // Panel nivel
@@ -146,11 +146,11 @@ public class GUI extends JFrame {
         nivel.setBorder(BorderFactory.createTitledBorder("Nivel"));
         nivel.setBackground(new Color(255, 210, 142,152));
 
-        constraints.gridx=5;
-        constraints.gridy=5;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.BOTH;
-        constraints.anchor=GridBagConstraints.LINE_START;
+        constraints.gridx = 5;
+        constraints.gridy = 5;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.LINE_START;
         add(nivel,constraints);
 
         // Panel juego
@@ -159,11 +159,11 @@ public class GUI extends JFrame {
         juego.setBorder(BorderFactory.createTitledBorder("Presta atención a la palabras"));
         juego.setBackground(Color.white);
 
-        constraints.gridx=5;
-        constraints.gridy=6;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.BOTH;
-        constraints.anchor=GridBagConstraints.LINE_START;
+        constraints.gridx = 5;
+        constraints.gridy = 6;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.LINE_START;
         add(juego,constraints);
 
         // Creación botón empezar
@@ -182,11 +182,11 @@ public class GUI extends JFrame {
         informacion.setBorder(BorderFactory.createTitledBorder("Información de la partida"));
         informacion.setBackground(new Color(81, 221, 241,152));
 
-        constraints.gridx=5;
-        constraints.gridy=8;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.BOTH;
-        constraints.anchor=GridBagConstraints.LINE_START;
+        constraints.gridx = 5;
+        constraints.gridy = 8;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.LINE_START;
         add(informacion,constraints);
 
     }
@@ -209,10 +209,10 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource()==empezar){
+            if(e.getSource() == empezar){
 
             }else{
-                if(e.getSource()==registro){
+                if(e.getSource() == registro){
                     // Si existe usuario entonces deshabilita botón registro y habilita el botón de inicio, si no existe el usuario entonces lo agrega al archivo txt
                     nombreUsuario = JOptionPane.showInputDialog(null,"Ingrese su nombre o su alias","Registro",1);
                     usuario = fileManager.lecturaFileUsuarios();
@@ -226,16 +226,16 @@ public class GUI extends JFrame {
                     }
 
                 }else{
-                    if (e.getSource()==creditos){
+                    if (e.getSource() == creditos){
                         // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS
                         JOptionPane.showMessageDialog(null,CREDITOS,"Créditos",JOptionPane.INFORMATION_MESSAGE);
                     }else{
-                        if (e.getSource()==ayuda){
+                        if (e.getSource() == ayuda){
                             // Al presionar el botón ?, salen las indicaciones que están en la variable estatica AYUDA
                             imageExplicacion = new ImageIcon(getClass().getResource("/utilidades/tabla por nivel.PNG"));
                             JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
                         }else{
-                            if (e.getSource()==minimizar){
+                            if (e.getSource() == minimizar){
                                 // Sirve para minimizar el JFrame
                                 setExtendedState(JFrame.CROSSHAIR_CURSOR);
                             }else{
