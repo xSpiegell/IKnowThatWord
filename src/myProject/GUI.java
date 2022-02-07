@@ -173,8 +173,12 @@ public class GUI extends JFrame {
         empezar.setFocusable(false);
         empezar.setEnabled(false);
 
-        juego.setLayout(new BorderLayout());
-        juego.add(empezar, BorderLayout.SOUTH);
+        constraints.gridx = 5;
+        constraints.gridy = 7;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        add(empezar,constraints);
 
         // Panel aciertos, errores y resultado
         informacion = new JPanel();
