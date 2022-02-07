@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
- * This class is used for ...
- * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
- * @version v.1.0.0 date:21/11/2021
+ * Esta es la clase principal
+ * @autor Mayra Alejandra Sanchez - mayra.alejandra.sanchez@correounivalle.edu.co - 202040506
+ * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
+ * @version v.1.0.0 date:4/02/2022
  */
 public class GUI extends JFrame {
     public  static final String CREDITOS = "CRÉDITOS\n" +
@@ -23,6 +25,10 @@ public class GUI extends JFrame {
     private JButton registro,ayuda,salir, creditos, empezar,minimizar;
     private JPanel alias, nivel, informacion, juego;
     private ImageIcon imageExplicacion;
+    private String nombreUsuario;
+    private JTextField linea;
+    private FileManager fileManager;
+    private ArrayList<String> usuario = new ArrayList<String>();
 
     /**
      * Constructor de la clase GUI
@@ -50,6 +56,7 @@ public class GUI extends JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
         // Create Listener Object and Control Object
         escucha = new Escucha();
+        fileManager = new FileManager();
         // Set up JComponents
         headerProject = new Header("I know that word", Color.pink);
 
@@ -107,20 +114,8 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.CENTER;
         this.add(creditos,constraints);
 
-        // Creación botón empezar
-        empezar = new JButton(" Iniciar ");
-        empezar.addActionListener(escucha);
-        empezar.setBackground(Color.yellow);
-        empezar.setFocusable(false);
-        constraints.gridx = 5;
-        constraints.gridy = 7;
-        constraints.gridwidth = 1;
-        constraints.fill=GridBagConstraints.CENTER;
-        constraints.anchor=GridBagConstraints.CENTER;
-        this.add(empezar,constraints);
-
         // Creación botón registro
-        registro = new JButton(" Registrate ");
+        registro = new JButton(" Registrarse / Iniciar sesión  ");
         registro.addActionListener(escucha);
         registro.setBackground(Color.ORANGE);
         registro.setFocusable(false);
@@ -157,9 +152,9 @@ public class GUI extends JFrame {
         constraints.anchor = GridBagConstraints.LINE_START;
         add(nivel,constraints);
 
-        //Panel juego
+        // Panel juego
         juego = new JPanel();
-        juego.setPreferredSize(new Dimension(300,350));
+        juego.setPreferredSize(new Dimension(300,250));
         juego.setBorder(BorderFactory.createTitledBorder("Presta atención a la palabras"));
         juego.setBackground(Color.white);
 
@@ -170,10 +165,20 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_START;
         add(juego,constraints);
 
-        //Panel aciertos, errores y resultado
+        // Creación botón empezar
+        empezar = new JButton(" Iniciar ");
+        empezar.addActionListener(escucha);
+        empezar.setBackground(Color.yellow);
+        empezar.setFocusable(false);
+        empezar.setEnabled(false);
+
+        juego.setLayout(new BorderLayout());
+        juego.add(empezar, BorderLayout.SOUTH);
+
+        // Panel aciertos, errores y resultado
         informacion = new JPanel();
         informacion.setPreferredSize(new Dimension(200,100));
-        informacion.setBorder(BorderFactory.createTitledBorder("Información"));
+        informacion.setBorder(BorderFactory.createTitledBorder("Información de la partida"));
         informacion.setBackground(new Color(81, 221, 241,152));
 
         constraints.gridx = 5;
@@ -204,9 +209,19 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == empezar){
 
-
             }else{
                 if(e.getSource() == registro){
+                    // Si existe usuario entonces deshabilita botón registro y habilita el botón de inicio, si no existe el usuario entonces lo agrega al archivo txt
+                    nombreUsuario = JOptionPane.showInputDialog(null,"Ingrese su nombre o su alias","Registro",1);
+                    usuario = fileManager.lecturaFileUsuarios();
+                    if (usuario.contains(nombreUsuario)){
+                        empezar.setEnabled(true);
+                        registro.setEnabled(false);
+                    }else{
+                        linea = new JTextField();
+                        linea.setText(nombreUsuario);
+                        fileManager.escribirFile(linea.getText());
+                    }
 
                 }else{
                     if (e.getSource() == creditos){
