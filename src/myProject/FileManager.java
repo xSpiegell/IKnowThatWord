@@ -2,6 +2,7 @@ package myProject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Esta clase funciona para la lectura y escritura en documentos de txt
@@ -11,14 +12,15 @@ import java.util.ArrayList;
  */
 
 public class FileManager {
-    public static final String PATH="src/myProject/files/palabras.txt"; // Se asigna la direccion del txt a una variable
+    public static final String PALABRAS="src/myProject/files/palabras.txt"; //Se asigna la direccion del txt a una variable
+    public static final String USUARIOS="src/myProject/files/usuarios.txt"; //Se asigna la direccion del txt a una va
     private FileReader fileReader;
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
 
     /**
-     * Sirve para leer el archivo de txt
+     * Sirve para leer el archivo de txt de palabras
      * @return frases
      */
     public ArrayList<String> lecturaFile(int cantidadPalabras){
@@ -26,7 +28,7 @@ public class FileManager {
         int contador = 1;
 
         try {
-            fileReader = new FileReader(PATH);
+            fileReader = new FileReader(PALABRAS);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
 
@@ -49,14 +51,42 @@ public class FileManager {
         }
         return frases;
     }
-
     /**
-     * Sirve para escribir en el archivo
+     * Sirve para leer el archivo de txt de usuarios
+     * @return usuario
+     */
+    public ArrayList<String> lecturaFileUsuarios(){
+        ArrayList<String> usuario = new ArrayList<String>();
+
+        try {
+            fileReader=new FileReader(USUARIOS);
+            input = new BufferedReader(fileReader);
+            String line = input.readLine();
+            while(line != null){
+                usuario.add(line);
+                line = input.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return usuario;
+    }
+    /**
+     * Sirve para escribir en el archivo de usuarios
      * @param line
      */
     public void escribirFile(String line){
         try {
-            fileWriter = new FileWriter(PATH,true);
+            fileWriter = new FileWriter(USUARIOS,true);
             output = new BufferedWriter(fileWriter);
             output.write(line);
             output.newLine();
