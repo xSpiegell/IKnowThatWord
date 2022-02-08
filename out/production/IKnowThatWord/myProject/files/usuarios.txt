@@ -1,1 +1,5 @@
-Mayra
+brayan, 1
+mayra, 1
+andres, 5
+mico, 10
+luca, 3velez, 1

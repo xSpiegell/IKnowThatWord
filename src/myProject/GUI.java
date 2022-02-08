@@ -26,7 +26,7 @@ public class GUI extends JFrame {
     private Escucha escucha;
     private JButton registro, ayuda, salir, creditos, empezar, minimizar, botonSi, botonNo;
     private JPanel alias, nivel, informacion, juego, subPanel;
-    private JLabel palabraAleatoria, mostrarNivel, mensaje;
+    private JLabel palabraAleatoria, mostrarNivel, mensaje, mostrarAlias;
     private ImageIcon imageExplicacion;
     private Timer timer;
     private FileManager fileManager;
@@ -37,7 +37,8 @@ public class GUI extends JFrame {
     private ArrayList<Integer> delaysTimer;
     private String nombreUsuario;
     private JTextField linea;
-    private ArrayList<String> usuario = new ArrayList<>();
+    private ArrayList<String> usuarios;
+    private ArrayList<String> niveles;
 
     /**
      * Constructor de la clase GUI
@@ -123,6 +124,19 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.CENTER;
         this.add(creditos,constraints);
 
+        // Creación botón empezar
+        empezar = new JButton(" Iniciar ");
+        empezar.addActionListener(escucha);
+        empezar.setBackground(Color.yellow);
+        empezar.setFocusable(false);
+        empezar.setEnabled(false);
+        constraints.gridx = 5;
+        constraints.gridy = 7;
+        constraints.gridwidth = 1;
+        constraints.fill=GridBagConstraints.CENTER;
+        constraints.anchor=GridBagConstraints.CENTER;
+        this.add(empezar,constraints);
+
         // Creación botón registro
         registro = new JButton(" Registrarse / Iniciar sesión  ");
         registro.addActionListener(escucha);
@@ -140,6 +154,7 @@ public class GUI extends JFrame {
         alias.setPreferredSize(new Dimension(200,50));
         alias.setBorder(BorderFactory.createTitledBorder("Alias"));
         alias.setBackground(new Color(178, 161, 255,152));
+        alias.setLayout(new BorderLayout());
 
         constraints.gridx = 5;
         constraints.gridy = 4;
@@ -147,6 +162,9 @@ public class GUI extends JFrame {
         constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor=GridBagConstraints.LINE_START;
         add(alias,constraints);
+
+        mostrarAlias = new JLabel();
+        mostrarAlias.setHorizontalAlignment(JLabel.CENTER);
 
         subPanel = new JPanel();
         botonSi = new JButton("Si");
@@ -212,6 +230,8 @@ public class GUI extends JFrame {
         seleccionarPalabra = 0; // 1 si debe seleccionar las palabras que memorizo, de lo contrario 0
         aciertos = 0;
         porcentajeAciertos = 0.0;
+        usuarios = new ArrayList<>();
+        niveles = new ArrayList<>();
     }
 
     /**
@@ -315,7 +335,11 @@ public class GUI extends JFrame {
                 nivelActual++;
                 mensaje.setText("¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "\n" + "% en aciertos");
             }else{
-                mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
+                if(nivelActual == 11){
+                    mensaje.setText("¡Has ganado el juego!");
+                }else{
+                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
+                }
             }
 
             empezar.addActionListener(escucha);
@@ -369,34 +393,34 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(nivelActual){
-                case 1: palabrasAMemorizar = fileManager.lecturaFile(20);
+                case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(20);
                         porcentajeAciertos = (aciertos/20.0) * 100.0;
                         break;
-                case 2: palabrasAMemorizar = fileManager.lecturaFile(40);
+                case 2: palabrasAMemorizar = fileManager.lecturaFilePalabras(40);
                         porcentajeAciertos = (aciertos/40.0) * 100.0;
                         break;
-                case 3: palabrasAMemorizar = fileManager.lecturaFile(50);
+                case 3: palabrasAMemorizar = fileManager.lecturaFilePalabras(50);
                         porcentajeAciertos = (aciertos/50.0) * 100.0;
                         break;
-                case 4: palabrasAMemorizar = fileManager.lecturaFile(60);
+                case 4: palabrasAMemorizar = fileManager.lecturaFilePalabras(60);
                         porcentajeAciertos = (aciertos/60.0) * 100.0;
                         break;
-                case 5: palabrasAMemorizar = fileManager.lecturaFile(70);
+                case 5: palabrasAMemorizar = fileManager.lecturaFilePalabras(70);
                         porcentajeAciertos = (aciertos/70.0) * 100.0;
                         break;
-                case 6: palabrasAMemorizar = fileManager.lecturaFile(80);
+                case 6: palabrasAMemorizar = fileManager.lecturaFilePalabras(80);
                         porcentajeAciertos = (aciertos/80.0) * 100.0;
                         break;
-                case 7: palabrasAMemorizar = fileManager.lecturaFile(100);
+                case 7: palabrasAMemorizar = fileManager.lecturaFilePalabras(100);
                         porcentajeAciertos = (aciertos/100.0) * 100.0;
                         break;
-                case 8: palabrasAMemorizar = fileManager.lecturaFile(120);
+                case 8: palabrasAMemorizar = fileManager.lecturaFilePalabras(120);
                         porcentajeAciertos = (aciertos/120.0) * 100.0;
                         break;
-                case 9: palabrasAMemorizar = fileManager.lecturaFile(140);
+                case 9: palabrasAMemorizar = fileManager.lecturaFilePalabras(140);
                         porcentajeAciertos = (aciertos/140.0) * 100.0;
                         break;
-                case 10: palabrasAMemorizar = fileManager.lecturaFile(200);
+                case 10: palabrasAMemorizar = fileManager.lecturaFilePalabras(200);
                         porcentajeAciertos = (aciertos/200.0) * 100.0;
                         break;
             }
@@ -457,21 +481,32 @@ public class GUI extends JFrame {
                             }else{
                                 empezar.setEnabled(false);
                             }
+
+                            // AQUI SE REESCRIBE EL NIVEL DEL ARCHIVO DE TEXTO
                         }
                     }
                 }else{
                     if(e.getSource() == registro){
-                        // Si existe usuario entonces deshabilita botón registro y habilita el botón de inicio, si no existe el usuario entonces lo agrega al archivo txt
+                        // Crea o busca un usuario en el juego
                         nombreUsuario = JOptionPane.showInputDialog(null,"Ingrese su nombre o su alias","Registro",1);
-                        usuario = fileManager.lecturaFileUsuarios();
-                        if (usuario.contains(nombreUsuario)){
-                            empezar.setEnabled(true);
-                            registro.setEnabled(false);
-                        }else{
-                            linea = new JTextField();
-                            linea.setText(nombreUsuario);
+                        linea = new JTextField();
+                        fileManager.lecturaFileUsuarios();
+                        usuarios = fileManager.getUsuarios();
+                        niveles = fileManager.getNiveles();
+
+                        if (!usuarios.contains(nombreUsuario)){
+                            linea.setText(nombreUsuario + ", " + String.valueOf(nivelActual));
                             fileManager.escribirFile(linea.getText());
+                        }else{
+                            nivelActual = Integer.parseInt(niveles.get(usuarios.indexOf(nombreUsuario)));
                         }
+
+                        empezar.setEnabled(true);
+                        registro.setEnabled(false);
+                        mostrarAlias.setText(nombreUsuario);
+                        alias.add(mostrarAlias);
+                        revalidate();
+                        repaint();
                     }else{
                         if (e.getSource() == creditos){
                             // Al presionar el botón CREDITOS, salen los nombres de los programadores que estan en la variable estatica CREDITOS

@@ -3,6 +3,7 @@ package myProject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Esta clase funciona para la lectura y escritura en documentos de txt
@@ -18,12 +19,29 @@ public class FileManager {
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
+    private File file;
+    private Scanner scan;
+    private ArrayList<String> usuarios;
+    private ArrayList<String> niveles;
+
+    public FileManager(){
+        usuarios = new ArrayList<>();
+        niveles = new ArrayList<>();
+    }
+
+    public ArrayList<String> getUsuarios(){
+        return usuarios;
+    }
+
+    public ArrayList<String> getNiveles(){
+        return niveles;
+    }
 
     /**
      * Sirve para leer el archivo de txt de palabras
      * @return frases
      */
-    public ArrayList<String> lecturaFile(int cantidadPalabras){
+    public ArrayList<String> lecturaFilePalabras(int cantidadPalabras){
         ArrayList<String> frases = new ArrayList<>();
         int contador = 1;
 
@@ -53,32 +71,26 @@ public class FileManager {
     }
     /**
      * Sirve para leer el archivo de txt de usuarios
-     * @return usuario
      */
-    public ArrayList<String> lecturaFileUsuarios(){
-        ArrayList<String> usuario = new ArrayList<String>();
-
+    public void lecturaFileUsuarios(){
         try {
-            fileReader=new FileReader(USUARIOS);
-            input = new BufferedReader(fileReader);
-            String line = input.readLine();
-            while(line != null){
-                usuario.add(line);
-                line = input.readLine();
+            file = new File(USUARIOS);
+            scan = new Scanner(file);
+
+            while(scan.hasNextLine()){
+                String data = scan.nextLine();
+                String[] datosUsuarioArray = data.split(", ");
+                usuarios.add(datosUsuarioArray[0]);
+                niveles.add(datosUsuarioArray[1]);
+                datosUsuarioArray = new String[datosUsuarioArray.length];
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e){
             e.printStackTrace();
         }finally {
-            try {
-                input.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            scan.close();
         }
-
-        return usuario;
     }
     /**
      * Sirve para escribir en el archivo de usuarios
