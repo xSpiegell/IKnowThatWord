@@ -166,9 +166,11 @@ public class GUI extends JFrame {
         mostrarAlias = new JLabel();
         mostrarAlias.setHorizontalAlignment(JLabel.CENTER);
 
-        subPanel = new JPanel();
         botonSi = new JButton("Si");
         botonNo = new JButton("No");
+        subPanel = new JPanel();
+        subPanel.add(botonSi);
+        subPanel.add(botonNo);
 
         // Panel nivel
         nivel = new JPanel();
@@ -222,8 +224,8 @@ public class GUI extends JFrame {
         mensaje.setHorizontalAlignment(JLabel.CENTER);
 
         delaysTimer = new ArrayList<>(2);
-        delaysTimer.add(2000);
         delaysTimer.add(5000);
+        delaysTimer.add(7000);
         timer = new Timer(delaysTimer.get(0), escucha);
 
         nivelActual = 1;
@@ -254,27 +256,9 @@ public class GUI extends JFrame {
         private ArrayList<Integer> numerosAleatorios;
         private ArrayList<Integer> numerosAleatoriosExtra;
         private Random random;
-        private EscuchaBotonesSecundarios escuchaBotonesSecundarios;
         private int palabra;
         private int aleatorio;
         private int respuesta;
-
-        private class EscuchaBotonesSecundarios implements ActionListener{
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == botonSi && listaAMemorizar.contains(palabraAleatoria.getText())){
-                    aciertos++;
-                }else{
-                    if(e.getSource() == botonNo && listaAMemorizar.contains(palabraAleatoria.getText()) == false){
-                        aciertos++;
-                    }
-                }
-                botonSi.setEnabled(false);
-                botonNo.setEnabled(false);
-                System.out.print(aciertos);
-            }
-        }
 
         public Escucha(){
             palabrasAMemorizar = new ArrayList<>();
@@ -282,10 +266,21 @@ public class GUI extends JFrame {
             numerosAleatoriosExtra = new ArrayList<>();
             listaAMemorizar = new ArrayList<>();
             random = new Random();
-            escuchaBotonesSecundarios = new EscuchaBotonesSecundarios();
             palabra = 0;
             aleatorio = 0;
             respuesta = 0; // 0 si selecciono YES, de lo contrario 1
+        }
+
+        public void activarDesactivarBotonesSecundarios(String estado){
+            if(estado == "activar"){
+                botonSi.addActionListener(escucha);
+                botonNo.addActionListener(escucha);
+                botonSi.setEnabled(true);
+                botonNo.setEnabled(true);
+            }else{
+                botonSi.setEnabled(false);
+                botonNo.setEnabled(false);
+            }
         }
 
         public boolean siguienteNivel(int nivel){
@@ -343,8 +338,10 @@ public class GUI extends JFrame {
             }
 
             empezar.addActionListener(escucha);
-            botonSi.removeActionListener(escuchaBotonesSecundarios);
-            botonNo.removeActionListener(escuchaBotonesSecundarios);
+            fileManager.reescribirArchivoUsuarios(nombreUsuario, String.valueOf(nivelActual)); // Reescribe el nivel del archivo usuarios.txt
+            activarDesactivarBotonesSecundarios("desactivar");
+            botonSi.removeActionListener(escucha);
+            botonNo.removeActionListener(escucha);
             juego.removeAll();
             informacion.add(mensaje, BorderLayout.CENTER);
             palabrasAMemorizar.clear();
@@ -372,8 +369,6 @@ public class GUI extends JFrame {
             }
             revalidate();
             repaint();
-
-            System.out.println(numerosAleatorios.toString());
         }
 
         public void escogerPalabra() {
@@ -433,10 +428,6 @@ public class GUI extends JFrame {
                     timer.start();
                     setPalabrasAleatorias();
                 }else{
-                    botonSi.addActionListener(escuchaBotonesSecundarios);
-                    botonNo.addActionListener(escuchaBotonesSecundarios);
-                    subPanel.add(botonSi);
-                    subPanel.add(botonNo);
                     juego.add(subPanel, BorderLayout.SOUTH);
                     timer.setInitialDelay(delaysTimer.get(1));
                     timer.setDelay(delaysTimer.get(1));
@@ -463,6 +454,7 @@ public class GUI extends JFrame {
                             timer.stop();
                             palabra = 0;
                             seleccionarPalabra = 1;
+                            activarDesactivarBotonesSecundarios("activar");
                             empezar.setEnabled(true);
                             empezar.addActionListener(escucha);
                             mensaje.setText("Continua para seleccionar las palabras que memorizaste");
@@ -475,14 +467,14 @@ public class GUI extends JFrame {
                             escogerPalabra();
                         }else{
                             timer.stop();
+                            botonSi.removeActionListener(escucha);
+                            botonNo.removeActionListener(escucha);
 
                             if(siguienteNivel(nivelActual)){
                                 empezar.setEnabled(true);
                             }else{
                                 empezar.setEnabled(false);
                             }
-
-                            // AQUI SE REESCRIBE EL NIVEL DEL ARCHIVO DE TEXTO
                         }
                     }
                 }else{
@@ -518,11 +510,24 @@ public class GUI extends JFrame {
                                 JOptionPane.showMessageDialog(null,AYUDA,"Explicación del juego", JOptionPane.PLAIN_MESSAGE, imageExplicacion);
                             }else{
                                 if (e.getSource() == minimizar){
-                                    // Sirve para minimizar el Jframe
+                                    // Minimiza el Jframe
                                     setExtendedState(JFrame.CROSSHAIR_CURSOR);
                                 }else{
-                                    // Sirve para cerrar el Jframe
-                                    System.exit(0);
+                                    if(e.getSource() == salir){
+                                        // Cierra el JFrame
+                                        System.exit(0);
+                                    }else{
+                                        if(e.getSource() == botonSi && listaAMemorizar.contains(palabraAleatoria.getText())){
+                                            aciertos++;
+                                        }else{
+                                            if(e.getSource() == botonNo && listaAMemorizar.contains(palabraAleatoria.getText()) == false){
+                                                aciertos++;
+                                            }
+                                        }
+                                        activarDesactivarBotonesSecundarios("desactivar");
+                                        revalidate();
+                                        repaint();
+                                    }
                                 }
                             }
                         }

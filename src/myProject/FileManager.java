@@ -2,7 +2,6 @@ package myProject;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -29,16 +28,25 @@ public class FileManager {
         niveles = new ArrayList<>();
     }
 
+    /**
+     * Retorna la lista de usuarios
+     * @return usuarios
+     */
     public ArrayList<String> getUsuarios(){
         return usuarios;
     }
 
+    /**
+     * retorna la lista de niveles de los jugadores
+     * @return
+     */
     public ArrayList<String> getNiveles(){
         return niveles;
     }
 
     /**
-     * Sirve para leer el archivo de txt de palabras
+     * Lee el archivo palabras.txt
+     * @param cantidadPalabras
      * @return frases
      */
     public ArrayList<String> lecturaFilePalabras(int cantidadPalabras){
@@ -69,31 +77,41 @@ public class FileManager {
         }
         return frases;
     }
+
     /**
-     * Sirve para leer el archivo de txt de usuarios
+     * Lee usuarios.txt
      */
     public void lecturaFileUsuarios(){
         try {
-            file = new File(USUARIOS);
-            scan = new Scanner(file);
+            fileReader = new FileReader(USUARIOS);
+            input = new BufferedReader(fileReader);
+            String line = input.readLine();
 
-            while(scan.hasNextLine()){
-                String data = scan.nextLine();
+            // Agrega una cantidad de palabras al arraylist dependiendo del nivel
+            while(line != null){
+                String data = line;
                 String[] datosUsuarioArray = data.split(", ");
                 usuarios.add(datosUsuarioArray[0]);
                 niveles.add(datosUsuarioArray[1]);
                 datosUsuarioArray = new String[datosUsuarioArray.length];
+                line = input.readLine();
             }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e){
             e.printStackTrace();
         }finally {
-            scan.close();
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
     /**
-     * Sirve para escribir en el archivo de usuarios
+     * Escribe nuevos usuarios en el archivo de usuarios.txt
      * @param line
      */
     public void escribirFile(String line){
@@ -105,6 +123,36 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Reesscribe el nivel actual del jugador
+     * @param nombre
+     * @param nuevoNivel
+     */
+    public void reescribirArchivoUsuarios(String nombre, String nuevoNivel){
+        try {
+            if(usuarios.contains(nombre)){
+                niveles.set(usuarios.indexOf(nombre), nuevoNivel);
+            }
+
+            fileWriter = new FileWriter(USUARIOS, false);
+            output = new BufferedWriter(fileWriter);
+
+            for(int i=0; i < usuarios.size(); i++){
+                output.write(usuarios.get(i) + ", " + niveles.get(i));
+                output.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
                 output.close();
             } catch (IOException e) {
