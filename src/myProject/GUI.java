@@ -326,14 +326,20 @@ public class GUI extends JFrame {
                     break;
             }
 
-            if(aprobacion){
-                nivelActual++;
-                mensaje.setText("¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "\n" + "% en aciertos");
-            }else{
-                if(nivelActual == 11){
-                    mensaje.setText("¡Has ganado el juego!");
+            if(nivelActual != 10){
+                if(aprobacion){
+                    nivelActual++;
+                    mensaje.setText("¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "%\n en aciertos.");
+
                 }else{
-                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos");
+                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.");
+                }
+            }else{
+                if(aprobacion){
+                    mensaje.setText("¡Has ganado el juego!, puedes volver a comenzar.");
+                    nivelActual = 1;
+                }else{
+                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.");
                 }
             }
 

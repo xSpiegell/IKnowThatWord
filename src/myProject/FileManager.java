@@ -2,7 +2,6 @@ package myProject;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Esta clase funciona para la lectura y escritura en documentos de txt
@@ -12,14 +11,12 @@ import java.util.Scanner;
  */
 
 public class FileManager {
-    public static final String PALABRAS="src/myProject/files/palabras.txt"; //Se asigna la direccion del txt a una variable
-    public static final String USUARIOS="src/myProject/files/usuarios.txt"; //Se asigna la direccion del txt a una va
+    public static final String PALABRAS="src/myProject/files/palabras.txt";
+    public static final String USUARIOS="src/myProject/files/usuarios.txt";
     private FileReader fileReader;
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
-    private File file;
-    private Scanner scan;
     private ArrayList<String> usuarios;
     private ArrayList<String> niveles;
 

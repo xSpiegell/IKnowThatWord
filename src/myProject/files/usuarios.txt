@@ -1,6 +1,0 @@
-hola, 1
-asd, 1
-adsdsd, 1
-mayra, 2
-sdasdsad, 1
-null, 1
