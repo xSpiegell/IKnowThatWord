@@ -57,8 +57,9 @@ public class GUI extends JFrame {
     }
 
     /**
-     * This method is used to set up the default JComponent Configuration,
-     * create Listener and control Objects used for the GUI class
+     * Este método se utiliza para configurar la configuración
+     * predeterminada de JComponent, crear un agente de escucha y controlar los objetos
+     * utilizados para la clase GUI.
      */
     private void initGUI() {
         // Set up JFrame Container's Layout
@@ -228,8 +229,8 @@ public class GUI extends JFrame {
         mensaje.setHorizontalAlignment(JLabel.CENTER);
 
         delaysTimer = new ArrayList<>(2);
-        delaysTimer.add(1000);
-        delaysTimer.add(1000);
+        delaysTimer.add(5000); // Tiempo de 5 segundos
+        delaysTimer.add(7000); // Tiempo de 7 segundos
         timer = new Timer(delaysTimer.get(0), escucha);
 
         nivelActual = 1;
@@ -252,7 +253,7 @@ public class GUI extends JFrame {
     }
 
     /**
-     * inner class that extends an Adapter Class or implements Listeners used by GUI class
+     * clase interna que extiende una clase de adaptador o implementa oyentes utilizados por la clase GUI
      */
     private class Escucha implements ActionListener {
         private ArrayList<String> palabrasAMemorizar;
@@ -264,6 +265,7 @@ public class GUI extends JFrame {
         private int aleatorio;
         private int respuesta;
 
+        // Constructor que inicializa las listas y las variables
         public Escucha(){
             palabrasAMemorizar = new ArrayList<>();
             numerosAleatorios = new ArrayList<>();
@@ -275,6 +277,10 @@ public class GUI extends JFrame {
             respuesta = 0; // 0 si selecciono YES, de lo contrario 1
         }
 
+        /**
+         * Activa y desactiva los botones si y no que salen cuando el jugador debe seleccionar si la palabra se encontraba o no en la lista
+         * @param estado
+         */
         public void activarDesactivarBotonesSecundarios(String estado){
             if(estado == "activar"){
                 botonSi.addActionListener(escucha);
@@ -287,6 +293,11 @@ public class GUI extends JFrame {
             }
         }
 
+        /**
+         *  Lleva el control de los niveles del juego como las condiciones para pasar de nivel y la cantidad de niveles en total
+         * @param nivel
+         * @return aprobacion;
+         */
         public boolean siguienteNivel(int nivel){
             boolean aprobacion = false;
             switch(nivel){
@@ -367,6 +378,9 @@ public class GUI extends JFrame {
             return aprobacion;
         }
 
+        /**
+         * Saca palabras aleatorias y las agrega al listado de palabras que se deben memorizar
+         */
         public void setPalabrasAleatorias(){
             aleatorio = random.nextInt(palabrasAMemorizar.size());
             if(numerosAleatorios.size() == 0 || !numerosAleatorios.contains(aleatorio)){
@@ -381,9 +395,11 @@ public class GUI extends JFrame {
             repaint();
         }
 
+        /**
+         * Escoge una cantidad de palabras para que el jugador selecciones si estaba en la lista o no
+         */
         public void escogerPalabra() {
             aleatorio = random.nextInt(palabrasAMemorizar.size());
-
             if(numerosAleatoriosExtra.size() == 0 || !numerosAleatoriosExtra.contains(aleatorio)){
                 numerosAleatoriosExtra.add(aleatorio);
                 palabraAleatoria.setText(palabrasAMemorizar.get(aleatorio));
@@ -397,6 +413,7 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Maneja la cantidad de palabras mostradas por cada nivel y hace el conteo de aciertos en cada nivel para verificar si pasa o no el nivel
             switch(nivelActual){
                 case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(20);
                         porcentajeAciertos = (aciertos/20.0) * 100.0;
@@ -425,19 +442,22 @@ public class GUI extends JFrame {
                 case 9: palabrasAMemorizar = fileManager.lecturaFilePalabras(140);
                         porcentajeAciertos = (aciertos/140.0) * 100.0;
                         break;
-                case 10: palabrasAMemorizar = fileManager.lecturaFilePalabras(2);
-                        porcentajeAciertos = (aciertos/2.0) * 100.0;
+                case 10: palabrasAMemorizar = fileManager.lecturaFilePalabras(200);
+                        porcentajeAciertos = (aciertos/200.0) * 100.0;
                         break;
             }
 
             if(e.getSource() == empezar){
+                // Al presionar en el boton iniciar
                 if(seleccionarPalabra == 0){
+                    // Muestra el listado de palabras aletorias que el jugador debe memorizar
                     timer.setInitialDelay(delaysTimer.get(0));
                     timer.setDelay(delaysTimer.get(0));
                     timer.restart();
                     timer.start();
                     setPalabrasAleatorias();
                 }else{
+                    // Muestra el listado de palabras aleatorias, el jugador debe decir si estaban o no en el listado
                     juego.add(subPanel, BorderLayout.SOUTH);
                     timer.setInitialDelay(delaysTimer.get(1));
                     timer.setDelay(delaysTimer.get(1));
@@ -482,15 +502,6 @@ public class GUI extends JFrame {
 
                             siguienteNivel(nivelActual);
                             empezar.setEnabled(true);
-
-                            /*
-                            if(siguienteNivel(nivelActual)){
-                                empezar.setEnabled(true);
-                            }else{
-                                empezar.setEnabled(false);
-                            }
-
-                             */
                         }
                     }
                 }else{
