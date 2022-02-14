@@ -167,7 +167,11 @@ public class GUI extends JFrame {
         mostrarAlias.setHorizontalAlignment(JLabel.CENTER);
 
         botonSi = new JButton("Si");
+        botonSi.setFocusable(false);
+        botonSi.setBackground(new Color(104, 89, 239, 255));
         botonNo = new JButton("No");
+        botonNo.setFocusable(false);
+        botonNo.setBackground(new Color(89, 239, 178, 255));
         subPanel = new JPanel();
         subPanel.add(botonSi);
         subPanel.add(botonNo);
@@ -224,8 +228,8 @@ public class GUI extends JFrame {
         mensaje.setHorizontalAlignment(JLabel.CENTER);
 
         delaysTimer = new ArrayList<>(2);
-        delaysTimer.add(5000);
-        delaysTimer.add(7000);
+        delaysTimer.add(1000);
+        delaysTimer.add(1000);
         timer = new Timer(delaysTimer.get(0), escucha);
 
         nivelActual = 1;
