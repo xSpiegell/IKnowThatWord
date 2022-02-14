@@ -1,2 +1,1 @@
-mayra, 2
-andres, 1
+mayra, 10

@@ -333,17 +333,17 @@ public class GUI extends JFrame {
             if(nivelActual != 10){
                 if(aprobacion){
                     nivelActual++;
-                    mensaje.setText("¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "%\n en aciertos.");
+                    mensaje.setText("<html>¡Pasaste al siguiente nivel!, obtuviste " + String.valueOf(porcentajeAciertos) + "%<br/> en aciertos.</html>");
 
                 }else{
-                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.");
+                    mensaje.setText("<html>¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.<br/>Puedes volver a intentarlo.</html>");
                 }
             }else{
                 if(aprobacion){
                     mensaje.setText("¡Has ganado el juego!, puedes volver a comenzar.");
                     nivelActual = 1;
                 }else{
-                    mensaje.setText("¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.");
+                    mensaje.setText("<html>¡Perdiste!, obtuviste " + String.valueOf(porcentajeAciertos) + "% en aciertos.<br/>Puedes volver a intentarlo.</html>");
                 }
             }
 
@@ -398,8 +398,8 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(nivelActual){
-                case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(2);
-                        porcentajeAciertos = (aciertos/2.0) * 100.0;
+                case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(20);
+                        porcentajeAciertos = (aciertos/20.0) * 100.0;
                         break;
                 case 2: palabrasAMemorizar = fileManager.lecturaFilePalabras(40);
                         porcentajeAciertos = (aciertos/40.0) * 100.0;
@@ -425,8 +425,8 @@ public class GUI extends JFrame {
                 case 9: palabrasAMemorizar = fileManager.lecturaFilePalabras(140);
                         porcentajeAciertos = (aciertos/140.0) * 100.0;
                         break;
-                case 10: palabrasAMemorizar = fileManager.lecturaFilePalabras(200);
-                        porcentajeAciertos = (aciertos/200.0) * 100.0;
+                case 10: palabrasAMemorizar = fileManager.lecturaFilePalabras(2);
+                        porcentajeAciertos = (aciertos/2.0) * 100.0;
                         break;
             }
 
@@ -480,11 +480,17 @@ public class GUI extends JFrame {
                             botonSi.removeActionListener(escucha);
                             botonNo.removeActionListener(escucha);
 
+                            siguienteNivel(nivelActual);
+                            empezar.setEnabled(true);
+
+                            /*
                             if(siguienteNivel(nivelActual)){
                                 empezar.setEnabled(true);
                             }else{
                                 empezar.setEnabled(false);
                             }
+
+                             */
                         }
                     }
                 }else{
