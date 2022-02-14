@@ -134,6 +134,10 @@ public class FileManager {
      * @param nuevoNivel
      */
     public void reescribirArchivoUsuarios(String nombre, String nuevoNivel){
+        // Se borran los elementos de las listas para que no hayan conflictos al reescribir el archivo de texto
+        usuarios.clear();
+        niveles.clear();
+        lecturaFileUsuarios();
         try {
             if(usuarios.contains(nombre)){
                 niveles.set(usuarios.indexOf(nombre), nuevoNivel);

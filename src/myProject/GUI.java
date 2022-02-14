@@ -398,8 +398,8 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(nivelActual){
-                case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(20);
-                        porcentajeAciertos = (aciertos/20.0) * 100.0;
+                case 1: palabrasAMemorizar = fileManager.lecturaFilePalabras(2);
+                        porcentajeAciertos = (aciertos/2.0) * 100.0;
                         break;
                 case 2: palabrasAMemorizar = fileManager.lecturaFilePalabras(40);
                         porcentajeAciertos = (aciertos/40.0) * 100.0;
